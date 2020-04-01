@@ -4,3 +4,4 @@ matplotlib
 unidecode
 inflect
 nltk
+pillow

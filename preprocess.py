@@ -67,12 +67,10 @@ if len(wav_files) == 0:
 
 else:
 
-    if not hp.ignore_tts:
+    text_dict = ljspeech(path)
 
-        text_dict = ljspeech(path)
-
-        with open(paths.data/'text_dict.pkl', 'wb') as f:
-            pickle.dump(text_dict, f)
+    with open(paths.data/'text_dict.pkl', 'wb') as f:
+        pickle.dump(text_dict, f)
 
     n_workers = max(1, args.num_workers)
 
@@ -92,6 +90,9 @@ else:
         bar = progbar(i, len(wav_files))
         message = f'{bar} {i}/{len(wav_files)} '
         stream(message)
+
+    # filter ids that are not present in the text
+    dataset = [d for d in dataset if d[0] in text_dict]
 
     with open(paths.data/'dataset.pkl', 'wb') as f:
         pickle.dump(dataset, f)

@@ -7,8 +7,8 @@ data_path = 'data/'
 
 # model ids are separate - that way you can use a new tts with an old wavernn and vice versa
 # NB: expect undefined behaviour if models were trained on different DSP settings
-voc_model_id = 'ljspeech_mol'
-tts_model_id = 'ljspeech_lsa_smooth_attention'
+voc_model_id = 'cutted_raw'
+tts_model_id = 'cutted_tts'
 
 # set this to True if you are only interested in WaveRNN
 ignore_tts = False
@@ -35,7 +35,7 @@ peak_norm = False                   # Normalise to the peak of each wav file
 
 
 # Model Hparams
-voc_mode = 'MOL'                    # either 'RAW' (softmax on raw bits) or 'MOL' (sample from mixture of logistics)
+voc_mode = 'RAW'                    # either 'RAW' (softmax on raw bits) or 'MOL' (sample from mixture of logistics)
 voc_upsample_factors = (5, 5, 11)   # NB - this needs to correctly factorise hop_length
 voc_rnn_dims = 512
 voc_fc_dims = 512
@@ -73,7 +73,7 @@ tts_lstm_dims = 512
 tts_postnet_K = 8
 tts_num_highways = 4
 tts_dropout = 0.5
-tts_cleaner_names = ['english_cleaners']
+tts_cleaner_names = ['basic_cleaners']
 tts_stop_threshold = -3.4           # Value below which audio generation ends.
                                     # For example, for a range of [-4, 4], this
                                     # will terminate the sequence at the first
@@ -81,10 +81,10 @@ tts_stop_threshold = -3.4           # Value below which audio generation ends.
 
 # Training
 
-tts_schedule = [(7,  1e-3,  10_000,  32),   # progressive training schedule
-                (5,  1e-4, 100_000,  32),   # (r, lr, step, batch_size)
-                (2,  1e-4, 180_000,  16),
-                (2,  1e-4, 350_000,  8)]
+tts_schedule = [(10,  1e-3,  10_000,  32),   # progressive training schedule
+                (7,  1e-4, 100_000,  8),   # (r, lr, step, batch_size)
+                (5,  1e-4, 180_000,  8),
+                (2,  1e-4, 1350_000,  8)]
 
 tts_max_mel_len = 1250              # if you have a couple of extremely long spectrograms you might want to use this
 tts_bin_lengths = True              # bins the spectrogram lengths before sampling in data loader - speeds up training
