@@ -1,4 +1,5 @@
 """ from https://github.com/keithito/tacotron """
+from utils.text.symbols import symbols_numbers
 
 '''
 Cleaners are transformations that run over the input text at both training and eval time.
@@ -65,9 +66,14 @@ def convert_to_ascii(text):
   return unidecode(text)
 
 
+def normalize_text(text):
+    text = ''.join([c for c in text if c in symbols_numbers])
+    return text
+
 def basic_cleaners(text):
   '''Basic pipeline that lowercases and collapses whitespace without transliteration.'''
   text = lowercase(text)
+  text = normalize_text(text)
   text = expand_numbers(text)
   text = collapse_whitespace(text)
   return text
