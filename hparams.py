@@ -82,14 +82,14 @@ tts_stop_threshold = -3.4           # Value below which audio generation ends.
 # Training
 
 tts_schedule = [(10,  1e-3,  10_000,  32),   # progressive training schedule
-                (7,  1e-4, 100_000,  8),   # (r, lr, step, batch_size)
-                (5,  1e-4, 180_000,  8),
+                (7,  1e-4, 20_000,  8),   # (r, lr, step, batch_size)
+                (5,  1e-4, 30_000,  8),
                 (2,  1e-4, 1350_000,  8)]
 
 tts_max_mel_len = 1250              # if you have a couple of extremely long spectrograms you might want to use this
 tts_bin_lengths = True              # bins the spectrogram lengths before sampling in data loader - speeds up training
 tts_clip_grad_norm = 1.0            # clips the gradient norm to prevent explosion - set to None if not needed
-tts_checkpoint_every = 2_000        # checkpoints the model every X steps
+tts_checkpoint_every = 5_000        # checkpoints the model every X steps
 # TODO: tts_phoneme_prob = 0.0              # [0 <-> 1] probability for feeding model phonemes vrs graphemes
 
 

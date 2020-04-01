@@ -92,6 +92,10 @@ else:
         stream(message)
 
     # filter ids that are not present in the text
+
+    for d in dataset:
+        if d[0] not in text_dict:
+            print(d[0])
     dataset = [d for d in dataset if d[0] in text_dict]
 
     with open(paths.data/'dataset.pkl', 'wb') as f:
