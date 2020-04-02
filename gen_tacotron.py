@@ -1,6 +1,7 @@
 import torch
 from models.fatchord_version import WaveRNN
 from utils import hparams as hp
+from utils.text.cleaners import basic_cleaners
 from utils.text.symbols import symbols
 from utils.paths import Paths
 from models.tacotron import Tacotron
@@ -112,10 +113,14 @@ if __name__ == "__main__":
     tts_model.load(tts_load_path)
 
     if input_text:
-        inputs = [text_to_sequence(input_text.strip(), hp.tts_cleaner_names)]
+        text = input_text.strip()
+        text = basic_cleaners(text)
+        inputs = [text_to_sequence(input_text.strip())]
     else:
         with open('sentences.txt') as f:
-            inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in f]
+            lines = f.readlines()
+            texts = [basic_cleaners(l.strip()) for l in lines]
+            inputs = [text_to_sequence(t) for t in texts]
 
     if args.vocoder == 'wavernn':
         voc_k = voc_model.get_step() // 1000

@@ -1,5 +1,6 @@
 """ from https://github.com/keithito/tacotron """
 from utils.text.symbols import symbols_numbers
+from phonemizer.phonemize import phonemize
 
 '''
 Cleaners are transformations that run over the input text at both training and eval time.
@@ -70,11 +71,13 @@ def normalize_text(text):
     text = ''.join([c for c in text if c in symbols_numbers])
     return text
 
+
 def basic_cleaners(text):
   '''Basic pipeline that lowercases and collapses whitespace without transliteration.'''
   text = lowercase(text)
   text = normalize_text(text)
   text = expand_numbers(text)
+  text = to_phonemes(text)
   text = collapse_whitespace(text)
   return text
 
@@ -95,3 +98,16 @@ def english_cleaners(text):
   text = expand_abbreviations(text)
   text = collapse_whitespace(text)
   return text
+
+
+def to_phonemes(text):
+  phonemes = phonemize(text,
+                       language='de',
+                       backend='espeak',
+                       strip=True,
+                       preserve_punctuation=True,
+                       with_stress=False,
+                       njobs=1,
+                       language_switch='remove-flags')
+
+  return phonemes

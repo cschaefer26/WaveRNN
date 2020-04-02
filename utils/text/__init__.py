@@ -1,18 +1,17 @@
 """ from https://github.com/keithito/tacotron """
 import re
 from utils.text import cleaners
-from utils.text.symbols import symbols
-
+from utils.text.symbols import symbols, symbols_phonemes
 
 # Mappings from symbol to numeric ID and vice versa:
-_symbol_to_id = {s: i for i, s in enumerate(symbols)}
-_id_to_symbol = {i: s for i, s in enumerate(symbols)}
+_symbol_to_id = {s: i for i, s in enumerate(symbols_phonemes)}
+_id_to_symbol = {i: s for i, s in enumerate(symbols_phonemes)}
 
 # Regular expression matching text enclosed in curly braces:
 _curly_re = re.compile(r'(.*?)\{(.+?)\}(.*)')
 
 
-def text_to_sequence(text, cleaner_names):
+def text_to_sequence(text):
   '''Converts a string of text to a sequence of IDs corresponding to the symbols in the text.
 
     The text can optionally have ARPAbet sequences enclosed in curly braces embedded
@@ -31,9 +30,9 @@ def text_to_sequence(text, cleaner_names):
   while len(text):
     m = _curly_re.match(text)
     if not m:
-      sequence += _symbols_to_sequence(_clean_text(text, cleaner_names))
+      sequence += _symbols_to_sequence(text)
       break
-    sequence += _symbols_to_sequence(_clean_text(m.group(1), cleaner_names))
+    sequence += _symbols_to_sequence(m.group(1))
     sequence += _arpabet_to_sequence(m.group(2))
     text = m.group(3)
 

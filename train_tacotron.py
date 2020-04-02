@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from utils import hparams as hp
 from utils.display import *
 from utils.dataset import get_tts_datasets
-from utils.text.symbols import symbols
+from utils.text.symbols import symbols, symbols_phonemes
 from utils.paths import Paths
 from models.tacotron import Tacotron
 import argparse
@@ -48,7 +48,7 @@ def main():
     # Instantiate Tacotron Model
     print('\nInitialising Tacotron Model...\n')
     model = Tacotron(embed_dims=hp.tts_embed_dims,
-                     num_chars=len(symbols),
+                     num_chars=len(symbols_phonemes),
                      encoder_dims=hp.tts_encoder_dims,
                      decoder_dims=hp.tts_decoder_dims,
                      n_mels=hp.num_mels,
