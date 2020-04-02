@@ -122,22 +122,23 @@ if __name__ == "__main__":
 
     article_lines = [l.strip() for l in article_lines]
     article = ' '.join(article_lines)
-    #doc = nlp(article.strip())
-    #sentences = [sent.string.strip() for sent in doc.sents]
-    inputs = []
+    doc = nlp(article.strip())
+    sentences = [sent.string.strip() for sent in doc.sents]
+    #inputs = []
     #for i in range(len(sentences)-1):
     #    further = sentences[i+1].split ()[0]
     #    s = ' '.join([sentences[i], further])
     #    inputs.append(s)
     #inputs = sentences
-    inputs = article_lines
+    inputs = sentences
+
     #print(inputs)
 
 #    inputs = article_lines
     # hack input with additional dots to force it finish
     for text in inputs:
         print(normalize_numbers(text))
-    inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in inputs]
+    inputs = [text_to_sequence(l.strip()) for l in inputs]
 
     if args.vocoder == 'wavernn':
         voc_k = voc_model.get_step() // 1000

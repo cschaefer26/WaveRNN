@@ -18,6 +18,7 @@ def valid_n_workers(num):
         raise argparse.ArgumentTypeError('%r must be an integer greater than 0' % num)
     return n
 
+
 parser = argparse.ArgumentParser(description='Preprocessing for WaveRNN and Tacotron')
 parser.add_argument('--path', '-p', help='directly point to dataset path (overrides hparams.wav_path')
 parser.add_argument('--extension', '-e', metavar='EXT', default='.wav', help='file extension to search for in dataset folder')

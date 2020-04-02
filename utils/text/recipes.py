@@ -23,3 +23,4 @@ def ljspeech(path: Union[str, Path]):
             text_dict[key] = text
 
     return text_dict
+
