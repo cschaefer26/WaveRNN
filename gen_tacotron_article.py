@@ -2,11 +2,12 @@ import torch
 from models.fatchord_version import WaveRNN
 from utils import hparams as hp
 from utils.numbertest import normalize_numbers
+from utils.text.cleaners import basic_cleaners
 from utils.text.symbols import symbols
 from utils.paths import Paths
 from models.tacotron import Tacotron
 import argparse
-from utils.text import text_to_sequence
+from utils.text import text_to_sequence, symbols_phonemes
 from utils.display import save_attention, simple_table
 from utils.dsp import reconstruct_waveform, save_wav
 from spacy.lang.de import German
@@ -98,7 +99,7 @@ if __name__ == "__main__":
 
     # Instantiate Tacotron Model
     tts_model = Tacotron(embed_dims=hp.tts_embed_dims,
-                         num_chars=len(symbols),
+                         num_chars=len(symbols_phonemes),
                          encoder_dims=hp.tts_encoder_dims,
                          decoder_dims=hp.tts_decoder_dims,
                          n_mels=hp.num_mels,
@@ -130,14 +131,16 @@ if __name__ == "__main__":
     #    s = ' '.join([sentences[i], further])
     #    inputs.append(s)
     #inputs = sentences
-    inputs = sentences
+    inputs = []
 
     #print(inputs)
 
 #    inputs = article_lines
     # hack input with additional dots to force it finish
-    for text in inputs:
-        print(normalize_numbers(text))
+    for text in sentences:
+        text = basic_cleaners(text)
+        inputs.append(text)
+    print(inputs)
     inputs = [text_to_sequence(l.strip()) for l in inputs]
 
     if args.vocoder == 'wavernn':
