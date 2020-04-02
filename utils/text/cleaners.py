@@ -75,6 +75,7 @@ def normalize_text(text):
 def basic_cleaners(text):
   '''Basic pipeline that lowercases and collapses whitespace without transliteration.'''
   #text = lowercase(text)
+  text = normalize_text(text)
   text = normalize_numbers(text)
   #text = expand_numbers(text)
   text = to_phonemes(text)

@@ -116,7 +116,7 @@ if __name__ == "__main__":
         text = input_text.strip()
         text = basic_cleaners(text)
         print(text)
-        inputs = [text_to_sequence(input_text.strip())]
+        inputs = [text_to_sequence(text.strip())]
     else:
         with open('sentences.txt') as f:
             lines = f.readlines()
