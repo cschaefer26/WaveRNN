@@ -2,7 +2,7 @@ import torch
 from models.fatchord_version import WaveRNN
 from utils import hparams as hp
 from utils.numbertest import normalize_numbers
-from utils.text.cleaners import basic_cleaners
+from utils.text.cleaners import basic_cleaners, basic_cleaners_prod
 from utils.text.symbols import symbols
 from utils.paths import Paths
 from models.tacotron import Tacotron
@@ -129,20 +129,12 @@ if __name__ == "__main__":
 
     doc = nlp(article.strip())
     sentences = [sent.string.strip() for sent in doc.sents]
-    #inputs = []
-    #for i in range(len(sentences)-1):
-    #    further = sentences[i+1].split ()[0]
-    #    s = ' '.join([sentences[i], further])
-    #    inputs.append(s)
-    #inputs = sentences
     inputs = []
 
-    #print(inputs)
+    hints = {'Flyer': 'flaɪɜ'}
 
-#    inputs = article_lines
-    # hack input with additional dots to force it finish
     for i, text in enumerate(sentences):
-        text = basic_cleaners(text)
+        text = basic_cleaners_prod(text, hints)
         print(f'{i} {text}')
         inputs.append(text)
     inputs = [text_to_sequence(l.strip()) for l in inputs]

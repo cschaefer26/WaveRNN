@@ -121,8 +121,10 @@ if __name__ == "__main__":
         with open('sentences.txt') as f:
             lines = f.readlines()
             texts = [basic_cleaners(l.strip()) for l in lines]
-            print(texts)
             inputs = [text_to_sequence(t) for t in texts]
+
+    for i, t in enumerate(texts):
+        print(f'{i} {t}')
 
     if args.vocoder == 'wavernn':
         voc_k = voc_model.get_step() // 1000
