@@ -196,6 +196,7 @@ class LSA(nn.Module):
         u = self.v(torch.tanh(processed_query + encoder_seq_proj + processed_loc))
         u = u.squeeze(-1)
 
+
         # Smooth Attention
         #scores = torch.sigmoid(u) / torch.sigmoid(u).sum(dim=1, keepdim=True)
         scores = F.softmax(u, dim=1)

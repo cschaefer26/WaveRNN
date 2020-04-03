@@ -109,6 +109,7 @@ def to_phonemes(text):
                        preserve_punctuation=True,
                        with_stress=False,
                        njobs=1,
+                       punctuation_marks=';:,.!?¡¿—…"«»“”()',
                        language_switch='remove-flags')
 
   return phonemes
