@@ -1,5 +1,5 @@
 """ from https://github.com/keithito/tacotron """
-from utils.text.symbols import symbols_numbers
+from utils.text.symbols import approved_symbols
 from phonemizer.phonemize import phonemize
 
 '''
@@ -68,7 +68,7 @@ def convert_to_ascii(text):
 
 
 def normalize_text(text):
-    text = ''.join([c for c in text if c in symbols_numbers])
+    text = ''.join([c for c in text if c in approved_symbols])
     return text
 
 
@@ -102,6 +102,7 @@ def english_cleaners(text):
 
 
 def to_phonemes(text):
+  text = text.replace('-', '—')
   phonemes = phonemize(text,
                        language='de',
                        backend='espeak',
@@ -111,5 +112,5 @@ def to_phonemes(text):
                        njobs=1,
                        punctuation_marks=';:,.!?¡¿—…"«»“”()',
                        language_switch='remove-flags')
-
+  phonemes = phonemes.replace('—', '-')
   return phonemes

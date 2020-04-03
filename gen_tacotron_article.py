@@ -118,11 +118,15 @@ if __name__ == "__main__":
     nlp = German()
     nlp.add_pipe(nlp.create_pipe('sentencizer'))
 
-    with open('sentences.txt') as f:
+    with open('article.txt') as f:
         article_lines = f.readlines()
 
     article_lines = [l.strip() for l in article_lines]
     article = ' '.join(article_lines)
+
+    print(article)
+    print()
+
     doc = nlp(article.strip())
     sentences = [sent.string.strip() for sent in doc.sents]
     #inputs = []
@@ -137,10 +141,10 @@ if __name__ == "__main__":
 
 #    inputs = article_lines
     # hack input with additional dots to force it finish
-    for text in sentences:
+    for i, text in enumerate(sentences):
         text = basic_cleaners(text)
+        print(f'{i} {text}')
         inputs.append(text)
-    print(inputs)
     inputs = [text_to_sequence(l.strip()) for l in inputs]
 
     if args.vocoder == 'wavernn':
