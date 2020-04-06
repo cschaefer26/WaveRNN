@@ -131,7 +131,7 @@ if __name__ == "__main__":
     sentences = [sent.string.strip() for sent in doc.sents]
     inputs = []
 
-    hints = {'Flyer': 'flaɪɜ'}
+    hints = {'Flyer': 'flaɪɜ', 'Lockdown': 'lɔkdaʊn'}
 
     for i, text in enumerate(sentences):
         text = basic_cleaners_prod(text, hints)
@@ -178,7 +178,7 @@ if __name__ == "__main__":
         if input_text:
             save_path = paths.tts_output/f'__input_{input_text[:10]}_{v_type}_{tts_k}k.wav'
         else:
-            save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k.wav'
+            save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k_g.wav'
 
         if save_attn: save_attention(attention, save_path)
 
