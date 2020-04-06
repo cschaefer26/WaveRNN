@@ -27,3 +27,4 @@ _arpabet = ['@' + s for s in cmudict.valid_symbols]
 symbols = [_pad] + list(_special) + list(_punctuation) + list(_letters) + _arpabet
 approved_symbols = symbols + list(_numbers) + ['—']
 symbols_phonemes = symbols + _phonemes
+punctuation = _punctuation

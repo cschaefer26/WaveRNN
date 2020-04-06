@@ -1,5 +1,5 @@
 """ from https://github.com/keithito/tacotron """
-from utils.text.symbols import approved_symbols
+from utils.text.symbols import approved_symbols, punctuation
 from phonemizer.phonemize import phonemize
 
 '''
@@ -116,10 +116,9 @@ def to_phonemes_prod(text, hints):
     words = text.split(' ')
     phonemes = []
     for word in words:
-        if word in hints:
-            phon = hints[word]
-        else:
-            phon = phonemize(word,
+        word, replaced = apply_hints(word, hints)
+        if not replaced:
+            word = phonemize(word,
                              language='de',
                              backend='espeak',
                              strip=True,
@@ -128,10 +127,25 @@ def to_phonemes_prod(text, hints):
                              njobs=1,
                              punctuation_marks=';:,.!?¡¿—…"«»“”()',
                              language_switch='remove-flags')
-        phonemes.append(phon)
+
+        phonemes.append(word)
     phonemes = ' '.join(phonemes)
     phonemes = phonemes.replace('—', '-')
     return phonemes
+
+
+def apply_hints(word, hints):
+    last_char = word[-1]
+    replaced = False
+    stripped = last_char in punctuation and len(word) > 1
+    if stripped:
+        word = word[:-1]
+    if word in hints:
+        word = hints[word]
+        replaced = True
+    if stripped:
+        word += last_char
+    return word, replaced
 
 
 def to_phonemes(text):
