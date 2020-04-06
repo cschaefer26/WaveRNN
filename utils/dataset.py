@@ -1,5 +1,7 @@
 import pickle
 import random
+from random import Random
+
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import Sampler
@@ -16,15 +18,22 @@ from pathlib import Path
 
 
 class VocoderDataset(Dataset):
-    def __init__(self, path: Path, dataset_ids, train_gta=False):
+    def __init__(self, path: Path, dataset_ids, train_gta=False, mix_gta=False):
         self.metadata = dataset_ids
         self.mel_path = path/'gta' if train_gta else path/'mel'
+        self.mel_path_target = path/'mel'
         self.quant_path = path/'quant'
-
+        self.mix_gta = train_gta and mix_gta
+        self.random = Random(42)
 
     def __getitem__(self, index):
         item_id = self.metadata[index]
-        m = np.load(self.mel_path/f'{item_id}.npy')
+        mel_path = self.mel_path
+        if self.mix_gta:
+            if self.random.random() < 0.5:
+                mel_path = self.mel_path_target
+
+        m = np.load(mel_path/f'{item_id}.npy')
         x = np.load(self.quant_path/f'{item_id}.npy')
         return m, x
 
@@ -37,7 +46,7 @@ def get_vocoder_datasets(path: Path, batch_size, train_gta):
     with open(path/'dataset.pkl', 'rb') as f:
         dataset = pickle.load(f)
 
-    dataset_ids = [x[0] for x in dataset]
+    dataset_ids = [x[0] for x in dataset if x[1] <= hp.tts_max_mel_len]
 
     random.seed(1234)
     random.shuffle(dataset_ids)
@@ -45,8 +54,8 @@ def get_vocoder_datasets(path: Path, batch_size, train_gta):
     test_ids = dataset_ids[-hp.voc_test_samples:]
     train_ids = dataset_ids[:-hp.voc_test_samples]
 
-    train_dataset = VocoderDataset(path, train_ids, train_gta)
-    test_dataset = VocoderDataset(path, test_ids, train_gta)
+    train_dataset = VocoderDataset(path, train_ids, train_gta, True)
+    test_dataset = VocoderDataset(path, test_ids, train_gta, False)
 
     train_set = DataLoader(train_dataset,
                            collate_fn=collate_vocoder,

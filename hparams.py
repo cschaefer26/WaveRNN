@@ -45,10 +45,10 @@ voc_res_blocks = 10
 
 # Training
 voc_batch_size = 32
-voc_lr = 1e-4
+voc_lr = 2e-5
 voc_checkpoint_every = 25_000
 voc_gen_at_checkpoint = 5           # number of samples to generate at each checkpoint
-voc_total_steps = 1_000_000         # Total number of training steps
+voc_total_steps = 10_000_000         # Total number of training steps
 voc_test_samples = 50               # How many unseen samples to put aside for testing
 voc_pad = 2                         # this will pad the input so that the resnet can 'see' wider than input length
 voc_seq_len = hop_length * 5        # must be a multiple of hop_length
@@ -84,7 +84,8 @@ tts_stop_threshold = -3.4           # Value below which audio generation ends.
 tts_schedule = [(10,  1e-3,  10_000,  32),   # progressive training schedule
                 (7,  1e-4, 20_000,  8),   # (r, lr, step, batch_size)
                 (5,  1e-4, 30_000,  8),
-                (2,  1e-4, 1350_000,  8)]
+                (2,  1e-4, 60_000,  8),
+                (1,  1e-4, 300_000,  8)]
 
 tts_max_mel_len = 1250              # if you have a couple of extremely long spectrograms you might want to use this
 tts_bin_lengths = True              # bins the spectrogram lengths before sampling in data loader - speeds up training
