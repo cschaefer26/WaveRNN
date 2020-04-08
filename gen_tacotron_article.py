@@ -128,10 +128,10 @@ if __name__ == "__main__":
     print()
 
     doc = nlp(article.strip())
-    sentences = [sent.string.strip() for sent in doc.sents]
+    sentences = [sent.strip() for sent in article_lines]
     inputs = []
 
-    hints = {'Flyer': 'flaɪɜ', 'Lockdown': 'lɔkdaʊn'}
+    hints = {'Flyer': 'flaɪɜ', 'Lockdown': 'lɔkdaʊn', 'Francescoa': 'frantʃɛskoː', 'Gesundheits-Check': 'ɡəzʊnthaɪts-tʃɛk'}
 
     for i, text in enumerate(sentences):
         text = basic_cleaners_prod(text, hints)

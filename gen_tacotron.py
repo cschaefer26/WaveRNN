@@ -162,9 +162,9 @@ if __name__ == "__main__":
             v_type = 'wavernn_unbatched'
 
         if input_text:
-            save_path = paths.tts_output/f'__input_{input_text[:10]}_{v_type}_{tts_k}k.wav'
+            save_path = paths.tts_output/f'__input_{input_text[:10]}_{v_type}_{tts_k}k_p.wav'
         else:
-            save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k_{voc_k}.wav'
+            save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k_{voc_k}_p.wav'
 
         if save_attn: save_attention(attention, save_path)
 
