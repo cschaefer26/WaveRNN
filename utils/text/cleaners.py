@@ -116,8 +116,8 @@ def to_phonemes_prod(text, hints):
     phonemes = []
     for word in words:
         word, replaced = apply_hints(word, hints)
+        word = word.replace('-', '—')
         if not replaced:
-            text = text.replace('-', '—')
             word = phonemize(word,
                              language='de',
                              backend='espeak',
@@ -127,7 +127,7 @@ def to_phonemes_prod(text, hints):
                              njobs=1,
                              punctuation_marks=';:,.!?¡¿—…"«»“”()',
                              language_switch='remove-flags')
-            word = word.replace('—', '-')
+        word = word.replace('—', '-')
         phonemes.append(word)
     phonemes = ' '.join(phonemes)
     return phonemes
